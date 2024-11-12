@@ -11,7 +11,7 @@ import sidebarSvg from '../assets/ele1.svg'
 function Home() {
   return (
     <div
-      className="h-screen relative flex flex-col justify-between "
+      className="h-screen relative flex flex-col justify-between px-4 lg:px-0"
       style={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
