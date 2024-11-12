@@ -8,7 +8,8 @@
     "build": "vite build",
     "bucket-build": "vite build --base=https://storage.googleapis.com/gdgrajkot-badge",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite --host 172.16.109.152"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",

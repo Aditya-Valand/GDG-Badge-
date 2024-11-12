@@ -5,6 +5,7 @@ import Badge2 from '../assets/badge-green.png';
 import Badge3 from '../assets/badge-multicolor.png';
 import Badge4 from '../assets/badge-red.png';
 import Badge5 from '../assets/badge-yellow.png';
+
 const TEMPLATES = [
   {
     id: 'template1',
@@ -154,12 +155,12 @@ const BadgeCreator = () => {
   };
 
   return (
-    <div className="p-16 -my-8 flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-[#EFEFEF] font-sans flex flex-col items-center justify-center text-black border-2 border-black rounded-[80px] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-[600px] h-[420px]">
+    <div className="p-8 sm:p-16 -my-8 flex flex-col items-center justify-center min-h-screen">
+      <div className="bg-[#EFEFEF] font-sans flex flex-col items-center justify-center text-black border-2 border-black rounded-[80px] p-4 sm:p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-full sm:w-[600px] h-auto sm:h-[420px]">
         {/* Main Badge Preview */}
         <div
           ref={badgeRef}
-          className="w-64 h-64 relative rounded-lg overflow-hidden bg-white"
+          className="w-40 sm:w-64 h-40 sm:h-64 relative rounded-lg overflow-hidden bg-white"
         >
           {uploadedImage ? (
             <div className="absolute inset-0">
@@ -187,12 +188,12 @@ const BadgeCreator = () => {
         </div>
 
         {/* Template Selection */}
-        <div className="flex gap-4 mt-6 w-full justify-center">
+        <div className="flex flex-wrap gap-4 mt-4 sm:mt-6 justify-center">
           {TEMPLATES.map((template) => (
             <button
               key={template.id}
               onClick={() => setSelectedTemplate(template)}
-              className={`relative bg-white w-16 h-16 mx-2 rounded-lg overflow-hidden transition-all ${
+              className={`relative bg-white w-12 sm:w-16 h-12 sm:h-16 mx-2 rounded-lg overflow-hidden transition-all ${
                 selectedTemplate.id === template.id
                   ? 'ring-2 ring-black ring-offset-2'
                   : 'hover:ring-2 hover:ring-gray-300 hover:ring-offset-2'
@@ -210,10 +211,10 @@ const BadgeCreator = () => {
       </div>
 
       {/* Upload Section */}
-      <div className="bg-[#EFEFEF] font-sans text-black border-2 border-black rounded-[50px] p-6 mt-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-[600px] h-[140px]">
-        <div className="flex justify-between items-center h-full">
+      <div className="bg-[#EFEFEF] font-sans text-black border-2 border-black rounded-[50px] p-4 sm:p-6 mt-6 sm:mt-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-full sm:w-[600px] h-auto sm:h-[140px]">
+        <div className="flex flex-col sm:flex-row justify-between items-center h-full">
           <div
-            className={`relative flex-1 mr-4 border-2 border-dashed rounded-3xl p-2 transition-all duration-200 ease-in-out cursor-pointer h-[80px] ${
+            className={`relative flex-1 mr-0 sm:mr-4 border-2 border-dashed rounded-3xl p-2 transition-all duration-200 ease-in-out cursor-pointer h-[80px] ${
               isDragging ? 'border-black bg-gray-100' : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
             }`}
             onDragOver={handleDragOver}
@@ -232,9 +233,9 @@ const BadgeCreator = () => {
             <div className="flex items-center gap-4 h-full">
               <div className="p-3 bg-white rounded-full shadow-md ml-4">
                 {uploadedImage ? (
-                  <ImageIcon className="w-6 h-6 text-black" />
+                  <ImageIcon className="w-5 sm:w-6 h-5 sm:h-6 text-black" />
                 ) : (
-                  <Upload className="w-6 h-6 text-black" />
+                  <Upload className="w-5 sm:w-6 h-5 sm:h-6 text-black" />
                 )}
               </div>
               
@@ -251,7 +252,7 @@ const BadgeCreator = () => {
 
           <button 
             onClick={handleDownload}
-            className="w-auto py-2 px-4 bg-[#F9ab00] text-black border-2 border-black rounded-[50px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-custom-peach flex items-center gap-2"
+            className="w-full sm:w-auto mt-4 sm:mt-0 py-2 px-4 bg-[#F9ab00] text-black border-2 border-black rounded-[50px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-custom-peach flex items-center gap-2"
             disabled={!uploadedImage}
           >
             <span>{uploadedImage ? 'Download Badge' : 'Upload an image first'}</span>
@@ -264,4 +265,3 @@ const BadgeCreator = () => {
 };
 
 export default BadgeCreator;
-
