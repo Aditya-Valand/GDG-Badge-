@@ -1,40 +1,44 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Image as ImageIcon } from 'lucide-react';
-
+import Badge1 from '../assets/badge-blue.png';
+import Badge2 from '../assets/badge-green.png';
+import Badge3 from '../assets/badge-multicolor.png';
+import Badge4 from '../assets/badge-red.png';
+import Badge5 from '../assets/badge-yellow.png';
 const TEMPLATES = [
   {
     id: 'template1',
     name: 'Tech Vibes',
-    preview: '/badge-blue.png',
-    template: '/badge-blue.png',
+    preview: Badge1,
+    template: Badge1,
     bgColor: 'bg-sky-100'
   },
   {
     id: 'template2',
     name: 'Gearing Up',
-    preview: '/badge-green.png',
-    template: '/badge-green.png',
+    preview: Badge2,
+    template: Badge2,
     bgColor: 'bg-green-100'
   },
   {
     id: 'template3',
     name: 'Innovation',
-    preview: '/badge-multicolor.png',
-    template: '/badge-multicolor.png',
+    preview: Badge3,
+    template: Badge3,
     bgColor: 'bg-gradient-to-r from-yellow-100 via-green-100 to-pink-100'
   },
   {
     id: 'template4',
     name: 'Connect',
-    preview: '/badge-red.png',
-    template: '/badge-red.png',
+    preview: Badge4,
+    template: Badge4,
     bgColor: 'bg-purple-100'
   },
   {
     id: 'template5',
     name: 'Developer',
-    preview: '/badge-yellow.png',
-    template: '/badge-yellow.png',
+    preview: Badge5,
+    template: Badge5,
     bgColor: 'bg-orange-100'
   }
 ];
