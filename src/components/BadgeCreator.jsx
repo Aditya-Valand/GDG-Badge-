@@ -1,9 +1,47 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Image as ImageIcon } from 'lucide-react';
 
+const TEMPLATES = [
+  {
+    id: 'template1',
+    name: 'Tech Vibes',
+    preview: '/badge-blue.png',
+    template: '/badge-blue.png',
+    bgColor: 'bg-sky-100'
+  },
+  {
+    id: 'template2',
+    name: 'Gearing Up',
+    preview: '/badge-green.png',
+    template: '/badge-green.png',
+    bgColor: 'bg-green-100'
+  },
+  {
+    id: 'template3',
+    name: 'Innovation',
+    preview: '/badge-multicolor.png',
+    template: '/badge-multicolor.png',
+    bgColor: 'bg-gradient-to-r from-yellow-100 via-green-100 to-pink-100'
+  },
+  {
+    id: 'template4',
+    name: 'Connect',
+    preview: '/badge-red.png',
+    template: '/badge-red.png',
+    bgColor: 'bg-purple-100'
+  },
+  {
+    id: 'template5',
+    name: 'Developer',
+    preview: '/badge-yellow.png',
+    template: '/badge-yellow.png',
+    bgColor: 'bg-orange-100'
+  }
+];
+
 const BadgeCreator = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [shape, setShape] = useState('square');
+  const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
   const [isDragging, setIsDragging] = useState(false);
   const badgeRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -51,16 +89,15 @@ const BadgeCreator = () => {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       
-      // Set canvas size to match badge size
-      canvas.width = 512; // Fixed size for better quality
+      canvas.width = 512;
       canvas.height = 512;
 
-      // Draw background color
+      // Draw background
       context.fillStyle = 'white';
       context.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Draw uploaded image if exists
       if (uploadedImage) {
-        // Create new image for uploaded content
         const userImage = new Image();
         userImage.crossOrigin = 'anonymous';
         await new Promise((resolve, reject) => {
@@ -69,7 +106,6 @@ const BadgeCreator = () => {
           userImage.src = uploadedImage;
         });
 
-        // Calculate dimensions to maintain aspect ratio and cover the badge
         const scale = Math.max(
           canvas.width / userImage.width,
           canvas.height / userImage.height
@@ -77,7 +113,6 @@ const BadgeCreator = () => {
         const x = (canvas.width - userImage.width * scale) / 2;
         const y = (canvas.height - userImage.height * scale) / 2;
 
-        // Draw uploaded image with cover behavior
         context.drawImage(
           userImage,
           x,
@@ -85,41 +120,25 @@ const BadgeCreator = () => {
           userImage.width * scale,
           userImage.height * scale
         );
-
-        // Create new image for badge template
-        const template = new Image();
-        template.crossOrigin = 'anonymous';
-        await new Promise((resolve, reject) => {
-          template.onload = resolve;
-          template.onerror = reject;
-          template.src = '/badge1.png';
-        });
-
-        // Draw badge template on top
-        context.drawImage(template, 0, 0, canvas.width, canvas.height);
-
-        // Apply shape mask if circle
-        if (shape === 'circle') {
-          context.globalCompositeOperation = 'destination-in';
-          context.beginPath();
-          context.arc(
-            canvas.width / 2,
-            canvas.height / 2,
-            canvas.width / 2,
-            0,
-            Math.PI * 2
-          );
-          context.fill();
-          context.globalCompositeOperation = 'source-over';
-        }
       }
+
+      // Draw selected template overlay
+      const template = new Image();
+      template.crossOrigin = 'anonymous';
+      await new Promise((resolve, reject) => {
+        template.onload = resolve;
+        template.onerror = reject;
+        template.src = selectedTemplate.template;
+      });
+
+      context.drawImage(template, 0, 0, canvas.width, canvas.height);
 
       // Download the final canvas
       canvas.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'my-badge.png';
+        link.download = `devfest-badge-${selectedTemplate.id}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -132,12 +151,11 @@ const BadgeCreator = () => {
 
   return (
     <div className="p-16 -my-8 flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-[#EFEFEF] font-sans flex flex-col items-center justify-center text-black border-2 border-black rounded-[80px] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-[600px] h-[380px]">
+      <div className="bg-[#EFEFEF] font-sans flex flex-col items-center justify-center text-black border-2 border-black rounded-[80px] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-[600px] h-[420px]">
+        {/* Main Badge Preview */}
         <div
           ref={badgeRef}
-          className={`w-64 h-64 relative ${
-            shape === 'circle' ? 'rounded-full' : 'rounded-lg'
-          } overflow-hidden bg-white`}
+          className="w-64 h-64 relative rounded-lg overflow-hidden bg-white"
         >
           {uploadedImage ? (
             <div className="absolute inset-0">
@@ -156,7 +174,7 @@ const BadgeCreator = () => {
           
           <div className="absolute inset-0 pointer-events-none">
             <img
-              src="/badge1.png"
+              src={selectedTemplate.template}
               alt="Badge Template"
               className="w-full h-full object-contain"
               crossOrigin="anonymous"
@@ -164,26 +182,30 @@ const BadgeCreator = () => {
           </div>
         </div>
 
-        <div className="flex font-semibold font-sans gap-4 mt-4">
-          <button
-            onClick={() => setShape('square')}
-            className={`flex-1 w-[280px] py-2 px-4 rounded-md ${
-              shape === 'square' ? 'bg-[#F9ab00] text-black border-2 border-black rounded-[50px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]' : 'bg-gray-200 rounded-[50px] text-black'
-            }`}
-          >
-            Square Badge
-          </button>
-          <button
-            onClick={() => setShape('circle')}
-            className={`flex-1 py-2 px-4 rounded-md ${
-              shape === 'circle' ? 'bg-[#F9ab00] text-black border-2 border-black rounded-[50px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]' : 'bg-gray-200 rounded-[50px] text-black'
-            }`}
-          >
-            Circle Badge
-          </button>
+        {/* Template Selection */}
+        <div className="flex gap-4 mt-6 w-full justify-center">
+          {TEMPLATES.map((template) => (
+            <button
+              key={template.id}
+              onClick={() => setSelectedTemplate(template)}
+              className={`relative bg-white w-16 h-16 mx-2 rounded-lg overflow-hidden transition-all ${
+                selectedTemplate.id === template.id
+                  ? 'ring-2 ring-black ring-offset-2'
+                  : 'hover:ring-2 hover:ring-gray-300 hover:ring-offset-2'
+              }`}
+            >
+              <img
+                src={template.preview}
+                alt={template.name}
+                className="w-full h-full object-cover"
+                crossOrigin="anonymous"
+              />
+            </button>
+          ))}
         </div>
       </div>
 
+      {/* Upload Section */}
       <div className="bg-[#EFEFEF] font-sans text-black border-2 border-black rounded-[50px] p-6 mt-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-[600px] h-[140px]">
         <div className="flex justify-between items-center h-full">
           <div
@@ -238,3 +260,4 @@ const BadgeCreator = () => {
 };
 
 export default BadgeCreator;
+
