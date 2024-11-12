@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import viteLogo from '/gdg.svg'
 import BadgeCreator from './components/BadgeCreator'
 import BadgeTry from './components/BadgeTry'
 import './App.css'
