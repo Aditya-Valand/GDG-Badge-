@@ -4,6 +4,7 @@ import customSvg from '../assets/cloud.svg';
 import backgroundImage from '../assets/bgimg4.png' // adjust the path as needed
 import BadgeCreator from './BadgeCreator';
 import Footer from './Footer';
+import BadgeTry from './BadgeTry';
 import CloudBox from './CloudBox';
 import sidebarSvg from '../assets/ele1.svg'
 
@@ -44,6 +45,7 @@ function Home() {
       />   */}
       <div className="flex-grow">
         <BadgeCreator />
+        {/* <BadgeTry/> */}
         {/* <CloudBox/>  */}
       </div>
       <Footer />
